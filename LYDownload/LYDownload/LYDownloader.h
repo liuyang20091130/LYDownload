@@ -17,25 +17,29 @@ typedef NS_ENUM(int, LYDownloadState) {
 @protocol LYDownloaderDelegate;
 @interface LYDownloader : NSObject
 
-@property (nonatomic,retain) NSURL *url;
-@property (nonatomic,copy) NSString *filePath;//保存文件路径
-@property (nonatomic,copy) NSString *cachePath;//缓存路径
-@property (nonatomic) unsigned long long cacheCapacity;//!<缓存大小 以M为单位
-@property (nonatomic,retain) NSURLConnection *connection;//!<下载连接
-@property (nonatomic) unsigned long long fileSize;//<!文件大小
-@property (nonatomic) unsigned long long finishedSize;//!<已完成的大小
-@property (nonatomic,readonly) double progress;
-@property (nonatomic,readonly) BOOL isDownloading;
-@property (nonatomic,readonly) BOOL hasFinished;
-@property (nonatomic,readonly) LYDownloadState  state;
-
+@property (nonatomic,assign,readonly) LYDownloadState  state;
+@property (nonatomic,retain,readonly) NSURL *url;
+@property (nonatomic,copy,readonly) NSString *filePath;//保存文件路径
+@property (nonatomic,copy,readonly) NSString *cachePath;//缓存路径
+@property (nonatomic,assign,readonly) unsigned long long fileSize;//<!文件大小
+@property (nonatomic,assign,readonly) unsigned long long finishedSize;//!<已完成的大小
 
 @property (nonatomic,assign) id<LYDownloaderDelegate>delegate;
 
+@property (nonatomic,assign) unsigned long long cacheCapacity;//!<缓存大小 以M为单位
+
 - (id)initWithURL:(NSURL *)url filePath:(NSString *)filePath cachePath:(NSString *)cachePath cacheCapacity:(NSInteger)capacity;
 - (void)start;
-//- (void)pause;
 - (void)cancel;
+@end
+
+
+@interface LYDownloader (readonlyPropertyForGetMethods)
+
+@property (nonatomic,assign,readonly) double progress;
+@property (nonatomic,assign,readonly) BOOL isDownloading;
+@property (nonatomic,assign,readonly) BOOL hasFinished;
+
 @end
 
 @protocol LYDownloaderDelegate <NSObject>

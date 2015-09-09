@@ -11,6 +11,13 @@
 }
 @property (nonatomic,assign) LYDownloadState  state;
 
+@property (nonatomic,retain) NSURL *url;
+@property (nonatomic,copy) NSString *filePath;//保存文件路径
+@property (nonatomic,copy) NSString *cachePath;//缓存路径
+@property (nonatomic,assign) unsigned long long fileSize;//<!文件大小
+@property (nonatomic,assign) unsigned long long finishedSize;//!<已完成的大小
+
+@property (nonatomic,retain) NSURLConnection *connection;//!<下载连接
 @property (nonatomic,retain) NSFileHandle *outFile;
 @property (nonatomic,retain) NSMutableData *cacheData;
 @end
@@ -45,14 +52,6 @@
         
     }
     return self;
-}
-
-- (BOOL)isDownloading {
-    return self.state == LYDownloadState_Downloading;
-}
-
-- (BOOL)hasFinished {
-    return self.state == LYDownloadState_Finished;
 }
 - (void)dealloc {
     if (_outFile) {
@@ -186,5 +185,22 @@
 }
 
 
+
+@end
+
+
+@implementation LYDownloader (readonlyPropertyForGetMethods)
+
+- (BOOL)isDownloading {
+    return self.state == LYDownloadState_Downloading;
+}
+
+- (BOOL)hasFinished {
+    return self.state == LYDownloadState_Finished;
+}
+
+- (double)progress {
+    return (long  double)self.finishedSize/(long double)self.fileSize;
+}
 
 @end

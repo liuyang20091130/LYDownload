@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "LYDownloadManager.h"
-#define NSLogLine  NSLog(@"%s",__func__)
+#define NSLogLine ;// NSLog(@"%s",__func__)
 
 @interface ViewController ()<LYDownloadManagerDelegate>
 
@@ -37,7 +37,7 @@
 }
 - (void)LYDownloadManager:(LYDownloadManager *)manager didChangedProgressOfURL:(NSURL *)url downloader:(LYDownloader *)downloader {
     NSLogLine;
-    NSLog(@"progress = %f",(double)downloader.finishedSize/(double)downloader.fileSize);
+    NSLog(@"progress = %f  %f",(double)downloader.finishedSize/(double)downloader.fileSize,downloader.progress);
 }
 - (void)LYDownloadManager:(LYDownloadManager *)manager didFinishedOfURL:(NSURL *)url downloader:(LYDownloader *)downloader {
     NSLogLine;
